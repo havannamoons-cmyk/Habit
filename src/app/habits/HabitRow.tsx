@@ -22,7 +22,7 @@ export function HabitRow({ id, name, doneToday }: Props) {
   const [optimisticDone, setOptimisticDone] = useOptimistic(doneToday)
 
   return (
-    <li className="flex items-center gap-2 rounded-md border border-zinc-200 px-3 py-2 dark:border-zinc-800">
+    <li className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-3 py-2.5 shadow-sm transition-colors hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-700">
       <form
         action={async () => {
           setOptimisticDone(!optimisticDone)
@@ -32,17 +32,17 @@ export function HabitRow({ id, name, doneToday }: Props) {
         <button
           type="submit"
           aria-label={optimisticDone ? "Desmarcar hoy" : "Marcar como hecho hoy"}
-          className={`h-6 w-6 rounded-full border transition-colors ${
+          className={`flex h-6 w-6 items-center justify-center rounded-full border transition-all active:scale-90 ${
             optimisticDone
-              ? "border-zinc-900 bg-zinc-900 dark:border-zinc-50 dark:bg-zinc-50"
-              : "border-zinc-300 hover:border-zinc-500 dark:border-zinc-700"
+              ? "border-emerald-600 bg-emerald-600 dark:border-emerald-500 dark:bg-emerald-500"
+              : "border-zinc-300 hover:border-emerald-500 dark:border-zinc-700 dark:hover:border-emerald-500"
           }`}
         >
           {optimisticDone && (
             <svg
               viewBox="0 0 20 20"
               fill="none"
-              className="mx-auto h-4 w-4 text-white dark:text-zinc-900"
+              className="h-4 w-4 text-white"
             >
               <path
                 d="M5 10l3 3 7-7"
@@ -57,9 +57,9 @@ export function HabitRow({ id, name, doneToday }: Props) {
       </form>
 
       <span
-        className={`flex-1 text-sm ${
+        className={`flex-1 text-sm transition-colors ${
           optimisticDone
-            ? "text-zinc-500 line-through"
+            ? "text-zinc-400 line-through dark:text-zinc-500"
             : "text-zinc-900 dark:text-zinc-50"
         }`}
       >
@@ -74,7 +74,7 @@ export function HabitRow({ id, name, doneToday }: Props) {
         <button
           type="submit"
           aria-label="Borrar hábito"
-          className="text-xs text-zinc-400 hover:text-red-600"
+          className="flex h-6 w-6 items-center justify-center rounded-md text-sm text-zinc-400 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/50"
         >
           ✕
         </button>
