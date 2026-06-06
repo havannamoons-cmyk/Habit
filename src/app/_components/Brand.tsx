@@ -22,7 +22,9 @@ export function Brand({ className = "" }: { className?: string }) {
           />
         </svg>
       </span>
-      <span className="text-sm font-semibold tracking-tight">Hábito</span>
+      <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-sm font-bold tracking-tight text-transparent dark:from-emerald-400 dark:to-teal-300">
+        Hábito
+      </span>
     </span>
   )
 }
