@@ -7,8 +7,9 @@
  */
 
 import { useOptimistic, useState, type CSSProperties } from "react"
+import { Flame } from "lucide-react"
 import { deleteHabit, toggleCheckInToday } from "./actions"
-import { getHabitDecor } from "./decor"
+import { getHabitIcon, HABIT_AVATAR } from "./decor"
 
 type Props = {
   id: string
@@ -41,7 +42,7 @@ export function HabitRow({
   const [optimisticDone, setOptimisticDone] = useOptimistic(doneToday)
   const [celebrate, setCelebrate] = useState(false)
 
-  const decor = getHabitDecor(name)
+  const Icon = getHabitIcon(name)
 
   return (
     <li className="group flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-3 py-3 shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-emerald-900">
@@ -62,12 +63,13 @@ export function HabitRow({
               celebrate ? "animate-pop" : ""
             } ${
               optimisticDone
-                ? "border-emerald-600 bg-emerald-600 dark:border-emerald-500 dark:bg-emerald-500"
-                : "border-zinc-300 hover:border-emerald-500 dark:border-zinc-700 dark:hover:border-emerald-500"
+                ? "border-violet-600 bg-violet-600 dark:border-violet-500 dark:bg-violet-500"
+                : "border-zinc-300 hover:border-violet-500 dark:border-zinc-700 dark:hover:border-violet-500"
             }`}
           >
             {optimisticDone && (
               <svg
+                data-check
                 viewBox="0 0 20 20"
                 fill="none"
                 className="h-4 w-4 text-white"
@@ -101,10 +103,10 @@ export function HabitRow({
       </form>
 
       <span
-        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-base ${decor.avatar}`}
+        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${HABIT_AVATAR}`}
         aria-hidden
       >
-        {decor.emoji}
+        <Icon className="h-[18px] w-[18px]" strokeWidth={2} />
       </span>
 
       <div className="min-w-0 flex-1">
@@ -125,9 +127,9 @@ export function HabitRow({
                 key={i}
                 className={`h-1.5 w-1.5 rounded-full transition-colors ${
                   did
-                    ? "bg-emerald-500"
+                    ? "bg-violet-500"
                     : "bg-zinc-200 dark:bg-zinc-700"
-                } ${i === 6 ? "ring-2 ring-amber-300 ring-offset-1 ring-offset-white dark:ring-offset-zinc-950" : ""}`}
+                } ${i === 6 ? "ring-2 ring-violet-300 ring-offset-1 ring-offset-white dark:ring-offset-zinc-950" : ""}`}
               />
             ))}
           </div>
@@ -137,9 +139,10 @@ export function HabitRow({
       {streak > 0 && (
         <span
           title={`${streak} día${streak === 1 ? "" : "s"} seguidos`}
-          className="inline-flex items-center gap-0.5 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold tabular-nums text-amber-700 dark:bg-amber-950/60 dark:text-amber-400"
+          className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold tabular-nums text-amber-700 dark:bg-amber-950/60 dark:text-amber-400"
         >
-          🔥 {streak}
+          <Flame className="h-3 w-3" strokeWidth={2.5} />
+          {streak}
         </span>
       )}
 

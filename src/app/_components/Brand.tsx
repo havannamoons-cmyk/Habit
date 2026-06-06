@@ -6,7 +6,7 @@
 export function Brand({ className = "" }: { className?: string }) {
   return (
     <span className={`inline-flex items-center gap-2 ${className}`}>
-      <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 shadow-sm">
+      <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500 shadow-sm">
         <svg
           viewBox="0 0 20 20"
           fill="none"
@@ -22,7 +22,7 @@ export function Brand({ className = "" }: { className?: string }) {
           />
         </svg>
       </span>
-      <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-sm font-bold tracking-tight text-transparent dark:from-emerald-400 dark:to-teal-300">
+      <span className="bg-gradient-to-r from-violet-600 to-fuchsia-500 bg-clip-text text-sm font-bold tracking-tight text-transparent dark:from-violet-400 dark:to-fuchsia-300">
         Hábito
       </span>
     </span>

@@ -37,7 +37,7 @@ export default async function SignupPage({ searchParams }: Props) {
                 type="email"
                 required
                 autoComplete="email"
-                className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm transition-colors focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/20 dark:border-zinc-700 dark:bg-zinc-900 dark:focus:border-emerald-500"
+                className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm transition-colors focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-600/20 dark:border-zinc-700 dark:bg-zinc-900 dark:focus:border-violet-500"
               />
             </div>
 
@@ -52,7 +52,7 @@ export default async function SignupPage({ searchParams }: Props) {
                 required
                 autoComplete="new-password"
                 minLength={6}
-                className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm transition-colors focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/20 dark:border-zinc-700 dark:bg-zinc-900 dark:focus:border-emerald-500"
+                className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm transition-colors focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-600/20 dark:border-zinc-700 dark:bg-zinc-900 dark:focus:border-violet-500"
               />
               <p className="text-xs text-zinc-500">Mínimo 6 caracteres.</p>
             </div>
@@ -68,7 +68,7 @@ export default async function SignupPage({ searchParams }: Props) {
 
             <button
               type="submit"
-              className="w-full rounded-lg bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+              className="w-full rounded-lg bg-violet-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-violet-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
             >
               Crear cuenta
             </button>
@@ -79,7 +79,7 @@ export default async function SignupPage({ searchParams }: Props) {
           ¿Ya tenés cuenta?{" "}
           <Link
             href="/login"
-            className="font-medium text-emerald-700 underline-offset-4 hover:underline dark:text-emerald-400"
+            className="font-medium text-violet-700 underline-offset-4 hover:underline dark:text-violet-400"
           >
             Entrá
           </Link>

@@ -27,18 +27,20 @@ describe("HabitRow", () => {
     expect(screen.getByText("leer 20 min")).toBeInTheDocument()
   })
 
+  // Buscamos el check por su marca data-check (la fila tiene otros SVG:
+  // el ícono del hábito y, si hay racha, la llama).
   it("NO muestra el check cuando doneToday=false", () => {
     const { container } = render(
       <HabitRow id="h1" name="leer" doneToday={false} />,
     )
-    expect(container.querySelector("svg")).not.toBeInTheDocument()
+    expect(container.querySelector("[data-check]")).not.toBeInTheDocument()
   })
 
   it("muestra el check cuando doneToday=true", () => {
     const { container } = render(
       <HabitRow id="h1" name="leer" doneToday={true} />,
     )
-    expect(container.querySelector("svg")).toBeInTheDocument()
+    expect(container.querySelector("[data-check]")).toBeInTheDocument()
   })
 
   it("tacha el texto cuando doneToday=true", () => {

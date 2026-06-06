@@ -6,6 +6,7 @@ import { HabitRow } from "@/app/habits/HabitRow"
 import { Brand } from "@/app/_components/Brand"
 import { Sprout, Sparkles, Sun } from "@/app/_components/Doodles"
 import { Celebration } from "@/app/_components/Celebration"
+import { getHabitIcon } from "@/app/habits/decor"
 
 // Día (YYYY-MM-DD) desplazado `delta` días.
 function shiftDay(day: string, delta: number): string {
@@ -28,13 +29,14 @@ function currentStreak(days: Set<string>, today: string): number {
 }
 
 // Ideas para sumar con un click cuando todavía hay pocos hábitos.
+// El ícono sale del mismo mapeo que los hábitos (coherencia).
 const SUGGESTIONS = [
-  { emoji: "💧", name: "Tomar agua" },
-  { emoji: "📖", name: "Leer 20 min" },
-  { emoji: "🧘", name: "Meditar" },
-  { emoji: "🏃", name: "Salir a correr" },
-  { emoji: "💪", name: "Ejercicio" },
-  { emoji: "😴", name: "Dormir 8h" },
+  "Tomar agua",
+  "Leer 20 min",
+  "Meditar",
+  "Salir a correr",
+  "Ejercicio",
+  "Dormir 8h",
 ]
 
 export default async function Home() {
@@ -100,7 +102,7 @@ export default async function Home() {
         </div>
 
         {/* Tarjeta de saludo + progreso */}
-        <section className="relative overflow-hidden rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50 via-white to-emerald-50/60 p-5 shadow-sm dark:border-zinc-800 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900">
+        <section className="relative overflow-hidden rounded-2xl border border-violet-100 bg-gradient-to-br from-amber-50 via-white to-violet-50/70 p-5 shadow-sm dark:border-zinc-800 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900">
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="flex items-center gap-1.5 text-xs text-zinc-500">
@@ -122,9 +124,9 @@ export default async function Home() {
 
           {total > 0 && (
             <div className="mt-4 space-y-1.5">
-              <div className="h-2.5 w-full overflow-hidden rounded-full bg-amber-100/80 dark:bg-zinc-800">
+              <div className="h-2.5 w-full overflow-hidden rounded-full bg-violet-100/80 dark:bg-zinc-800">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-amber-400 to-emerald-500 transition-all duration-700"
+                  className="h-full rounded-full bg-gradient-to-r from-violet-400 to-fuchsia-500 transition-all duration-700"
                   style={{ width: `${pct}%` }}
                 />
               </div>
@@ -142,11 +144,11 @@ export default async function Home() {
             required
             maxLength={100}
             placeholder="Nuevo hábito (ej. leer 20 min)"
-            className="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm transition-colors focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/20 dark:border-zinc-700 dark:bg-zinc-900 dark:focus:border-emerald-500"
+            className="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm transition-colors focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-600/20 dark:border-zinc-700 dark:bg-zinc-900 dark:focus:border-violet-500"
           />
           <button
             type="submit"
-            className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+            className="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-violet-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
           >
             Sumar
           </button>
@@ -157,18 +159,21 @@ export default async function Home() {
           <div className="space-y-2">
             <p className="text-xs font-medium text-zinc-500">Ideas para sumar</p>
             <div className="flex flex-wrap gap-2">
-              {SUGGESTIONS.map((s) => (
-                <form key={s.name} action={createHabit}>
-                  <input type="hidden" name="name" value={s.name} />
-                  <button
-                    type="submit"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition-colors hover:border-emerald-300 hover:bg-emerald-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/40"
-                  >
-                    <span aria-hidden>{s.emoji}</span>
-                    {s.name}
-                  </button>
-                </form>
-              ))}
+              {SUGGESTIONS.map((name) => {
+                const Icon = getHabitIcon(name)
+                return (
+                  <form key={name} action={createHabit}>
+                    <input type="hidden" name="name" value={name} />
+                    <button
+                      type="submit"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition-colors hover:border-violet-300 hover:bg-violet-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-violet-800 dark:hover:bg-violet-950/40"
+                    >
+                      <Icon className="h-3.5 w-3.5 text-violet-500" strokeWidth={2} />
+                      {name}
+                    </button>
+                  </form>
+                )
+              })}
             </div>
           </div>
         )}
@@ -177,7 +182,7 @@ export default async function Home() {
         <ul className="space-y-2">
           {total === 0 && (
             <li className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-zinc-300 px-4 py-10 text-center dark:border-zinc-700">
-              <Sprout className="h-12 w-12 text-emerald-500" />
+              <Sprout className="h-12 w-12 text-violet-500" />
               <p className="text-sm text-zinc-500">
                 Sumá tu primer hábito y empezá tu racha 🔥
               </p>
