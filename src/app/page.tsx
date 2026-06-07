@@ -1,3 +1,4 @@
+import { createElement } from "react"
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { logout } from "@/app/auth/actions"
@@ -159,21 +160,21 @@ export default async function Home() {
           <div className="space-y-2">
             <p className="text-xs font-medium text-zinc-500">Ideas para sumar</p>
             <div className="flex flex-wrap gap-2">
-              {SUGGESTIONS.map((name) => {
-                const Icon = getHabitIcon(name)
-                return (
-                  <form key={name} action={createHabit}>
-                    <input type="hidden" name="name" value={name} />
-                    <button
-                      type="submit"
-                      className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition-colors hover:border-violet-300 hover:bg-violet-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-violet-800 dark:hover:bg-violet-950/40"
-                    >
-                      <Icon className="h-3.5 w-3.5 text-violet-500" strokeWidth={2} />
-                      {name}
-                    </button>
-                  </form>
-                )
-              })}
+              {SUGGESTIONS.map((name) => (
+                <form key={name} action={createHabit}>
+                  <input type="hidden" name="name" value={name} />
+                  <button
+                    type="submit"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm transition-colors hover:border-violet-300 hover:bg-violet-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-violet-800 dark:hover:bg-violet-950/40"
+                  >
+                    {createElement(getHabitIcon(name), {
+                      className: "h-3.5 w-3.5 text-violet-500",
+                      strokeWidth: 2,
+                    })}
+                    {name}
+                  </button>
+                </form>
+              ))}
             </div>
           </div>
         )}

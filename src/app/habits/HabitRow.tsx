@@ -6,7 +6,7 @@
  * y una pequeña animación de celebración al completar.
  */
 
-import { useOptimistic, useState, type CSSProperties } from "react"
+import { createElement, useOptimistic, useState, type CSSProperties } from "react"
 import { Flame } from "lucide-react"
 import { deleteHabit, toggleCheckInToday } from "./actions"
 import { getHabitIcon, HABIT_AVATAR } from "./decor"
@@ -42,7 +42,7 @@ export function HabitRow({
   const [optimisticDone, setOptimisticDone] = useOptimistic(doneToday)
   const [celebrate, setCelebrate] = useState(false)
 
-  const Icon = getHabitIcon(name)
+  const habitIcon = getHabitIcon(name)
 
   return (
     <li className="group flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-3 py-3 shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-emerald-900">
@@ -106,7 +106,10 @@ export function HabitRow({
         className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${HABIT_AVATAR}`}
         aria-hidden
       >
-        <Icon className="h-[18px] w-[18px]" strokeWidth={2} />
+        {createElement(habitIcon, {
+          className: "h-[18px] w-[18px]",
+          strokeWidth: 2,
+        })}
       </span>
 
       <div className="min-w-0 flex-1">
