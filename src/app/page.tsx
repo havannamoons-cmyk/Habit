@@ -1,13 +1,47 @@
 import { createElement } from "react"
+import { Flame, CircleCheck, ListChecks, type LucideIcon } from "lucide-react"
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { logout } from "@/app/auth/actions"
 import { createHabit } from "@/app/habits/actions"
 import { HabitRow } from "@/app/habits/HabitRow"
 import { Hero } from "@/app/_components/Hero"
-import { Sprout, Sparkles, Sun } from "@/app/_components/Doodles"
+import { Sprout, Sparkles, Sun, Star } from "@/app/_components/Doodles"
 import { Celebration } from "@/app/_components/Celebration"
 import { getHabitIcon } from "@/app/habits/decor"
+
+// Frases que rotan por día (índice determinístico = mismo en server y client).
+const PHRASES = [
+  "Pequeños pasos, grandes cambios.",
+  "La constancia vence al talento.",
+  "Hoy es un buen día para empezar.",
+  "Un día a la vez.",
+  "Lo que hacés cada día te define.",
+  "El progreso, no la perfección.",
+  "Cada marca cuenta.",
+  "Sé constante, no perfecta.",
+]
+
+// Tarjetita de estadística (ícono + número + etiqueta).
+function Stat({
+  icon,
+  value,
+  label,
+}: {
+  icon: LucideIcon
+  value: number
+  label: string
+}) {
+  return (
+    <div className="flex flex-col items-center gap-0.5 rounded-xl border border-violet-100 bg-white/70 px-2 py-3 text-center shadow-sm backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-950/70">
+      {createElement(icon, { className: "h-4 w-4 text-violet-500" })}
+      <span className="font-serif text-lg font-semibold tabular-nums">
+        {value}
+      </span>
+      <span className="text-[10px] leading-tight text-zinc-500">{label}</span>
+    </div>
+  )
+}
 
 // Día (YYYY-MM-DD) desplazado `delta` días.
 function shiftDay(day: string, delta: number): string {
@@ -78,6 +112,19 @@ export default async function Home() {
   const pct = total === 0 ? 0 : Math.round((done / total) * 100)
   const allDone = total > 0 && done === total
 
+  // Estadísticas de toda la vida del usuario.
+  const totalDone = (habits ?? []).reduce(
+    (acc, h) => acc + (h.check_ins ?? []).length,
+    0,
+  )
+  const bestStreak = habitsWithStatus.reduce(
+    (max, h) => Math.max(max, h.streak),
+    0,
+  )
+
+  // Frase del día (rota según el día del mes).
+  const phrase = PHRASES[Number(today.slice(8, 10)) % PHRASES.length]
+
   const hour = new Date().getHours()
   const morning = hour >= 6 && hour < 13
   const greeting = morning
@@ -101,6 +148,13 @@ export default async function Home() {
           </form>
           <Hero />
         </div>
+
+        {/* Frase del día */}
+        <p className="flex items-center justify-center gap-2 text-center font-serif text-sm italic text-zinc-500">
+          <Star className="h-3 w-3 text-violet-400" />
+          {phrase}
+          <Star className="h-3 w-3 text-violet-400" />
+        </p>
 
         {/* Tarjeta de saludo + progreso */}
         <section className="relative overflow-hidden rounded-2xl border border-violet-100 bg-gradient-to-br from-amber-50 via-white to-violet-50/70 p-5 shadow-sm dark:border-zinc-800 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900">
@@ -137,6 +191,15 @@ export default async function Home() {
             </div>
           )}
         </section>
+
+        {/* Estadísticas */}
+        {total > 0 && (
+          <div className="grid grid-cols-3 gap-2">
+            <Stat icon={Flame} value={bestStreak} label="Mejor racha" />
+            <Stat icon={CircleCheck} value={totalDone} label="Completados" />
+            <Stat icon={ListChecks} value={total} label="Hábitos" />
+          </div>
+        )}
 
         {/* Sumar hábito */}
         <form action={createHabit} className="flex gap-2">

@@ -145,17 +145,19 @@ body {
 @keyframes twinkle {
   0%,
   100% {
-    opacity: 0.15;
-    transform: scale(0.7);
+    opacity: 0.45;
+    transform: scale(0.85);
   }
   50% {
-    opacity: 0.9;
-    transform: scale(1.1);
+    opacity: 1;
+    transform: scale(1.2);
   }
 }
 
 .twinkle {
   animation: twinkle 3.5s ease-in-out infinite;
+  /* Glow suave para que se despeguen del fondo claro. */
+  filter: drop-shadow(0 0 3px currentColor);
 }
 
 /* --- Confetti (al completar todo el día) --- */
