@@ -1,26 +1,21 @@
 import { createElement } from "react"
-import { Flame, CircleCheck, ListChecks, type LucideIcon } from "lucide-react"
+import {
+  Flame,
+  CircleCheck,
+  ListChecks,
+  LogOut,
+  type LucideIcon,
+} from "lucide-react"
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { logout } from "@/app/auth/actions"
 import { createHabit } from "@/app/habits/actions"
 import { HabitRow } from "@/app/habits/HabitRow"
 import { Hero } from "@/app/_components/Hero"
-import { Sprout, Sparkles, Sun, Star } from "@/app/_components/Doodles"
+import { Sprout, Sparkles, Sun } from "@/app/_components/Doodles"
 import { Celebration } from "@/app/_components/Celebration"
+import { Achievements } from "@/app/_components/Achievements"
 import { getHabitIcon } from "@/app/habits/decor"
-
-// Frases que rotan por día (índice determinístico = mismo en server y client).
-const PHRASES = [
-  "Pequeños pasos, grandes cambios.",
-  "La constancia vence al talento.",
-  "Hoy es un buen día para empezar.",
-  "Un día a la vez.",
-  "Lo que hacés cada día te define.",
-  "El progreso, no la perfección.",
-  "Cada marca cuenta.",
-  "Sé constante, no perfecta.",
-]
 
 // Tarjetita de estadística (ícono + número + etiqueta).
 function Stat({
@@ -122,9 +117,6 @@ export default async function Home() {
     0,
   )
 
-  // Frase del día (rota según el día del mes).
-  const phrase = PHRASES[Number(today.slice(8, 10)) % PHRASES.length]
-
   const hour = new Date().getHours()
   const morning = hour >= 6 && hour < 13
   const greeting = morning
@@ -137,24 +129,19 @@ export default async function Home() {
     <main className="flex flex-1 flex-col items-center px-4 py-10 sm:py-12">
       <Celebration active={allDone} />
       <div className="w-full max-w-md space-y-7">
-        <div className="relative">
-          <form action={logout} className="absolute right-0 top-0 z-10">
+        <div className="flex justify-end">
+          <form action={logout}>
             <button
               type="submit"
-              className="text-xs text-zinc-500 underline-offset-4 transition-colors hover:text-zinc-900 hover:underline dark:hover:text-zinc-100"
+              className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-900 dark:hover:text-zinc-200"
             >
+              <LogOut className="h-3.5 w-3.5" />
               Cerrar sesión
             </button>
           </form>
-          <Hero />
         </div>
 
-        {/* Frase del día */}
-        <p className="flex items-center justify-center gap-2 text-center font-serif text-sm italic text-zinc-500">
-          <Star className="h-3 w-3 text-violet-400" />
-          {phrase}
-          <Star className="h-3 w-3 text-violet-400" />
-        </p>
+        <Hero />
 
         {/* Tarjeta de saludo + progreso */}
         <section className="relative overflow-hidden rounded-2xl border border-violet-100 bg-gradient-to-br from-amber-50 via-white to-violet-50/70 p-5 shadow-sm dark:border-zinc-800 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900">
@@ -199,6 +186,16 @@ export default async function Home() {
             <Stat icon={CircleCheck} value={totalDone} label="Completados" />
             <Stat icon={ListChecks} value={total} label="Hábitos" />
           </div>
+        )}
+
+        {/* Logros */}
+        {total > 0 && (
+          <Achievements
+            totalDone={totalDone}
+            bestStreak={bestStreak}
+            totalHabits={total}
+            allDone={allDone}
+          />
         )}
 
         {/* Sumar hábito */}
