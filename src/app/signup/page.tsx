@@ -13,12 +13,12 @@ export default async function SignupPage({ searchParams }: Props) {
     <main className="flex flex-1 items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm space-y-6">
         <div className="flex justify-center">
-          <Brand />
+          <Brand size="lg" />
         </div>
 
         <div className="space-y-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
           <header className="space-y-1 text-center">
-            <h1 className="text-2xl font-semibold tracking-tight">
+            <h1 className="font-serif text-2xl font-semibold tracking-tight">
               Crear cuenta
             </h1>
             <p className="text-sm text-zinc-500">

@@ -10,6 +10,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -140,6 +141,23 @@ body {
   animation: float 7s ease-in-out infinite;
 }
 
+/* Estrellitas que titilan */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+}
+
+.twinkle {
+  animation: twinkle 3.5s ease-in-out infinite;
+}
+
 /* --- Confetti (al completar todo el día) --- */
 
 .confetti {
@@ -168,7 +186,8 @@ body {
   .burst-dot,
   .blob,
   .float,
-  .confetti {
+  .confetti,
+  .twinkle {
     animation: none;
   }
 }

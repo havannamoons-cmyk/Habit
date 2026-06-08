@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import { Backdrop } from "@/app/_components/Backdrop";
 
@@ -13,10 +13,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// Serif elegante para el nombre y los títulos.
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Hábito — tu tracker diario",
+  title: "Habituación — tu día, paso a paso",
   description:
-    "Seguí tus hábitos día a día. Marcá lo que cumpliste y mantené tu racha.",
+    "Seguí tus hábitos día a día, sumá rachas y construí constancia. Un tracker simple y lindo.",
 };
 
 export default function RootLayout({
@@ -27,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Backdrop />

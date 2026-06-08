@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server"
 import { logout } from "@/app/auth/actions"
 import { createHabit } from "@/app/habits/actions"
 import { HabitRow } from "@/app/habits/HabitRow"
-import { Brand } from "@/app/_components/Brand"
+import { Hero } from "@/app/_components/Hero"
 import { Sprout, Sparkles, Sun } from "@/app/_components/Doodles"
 import { Celebration } from "@/app/_components/Celebration"
 import { getHabitIcon } from "@/app/habits/decor"
@@ -90,9 +90,8 @@ export default async function Home() {
     <main className="flex flex-1 flex-col items-center px-4 py-10 sm:py-12">
       <Celebration active={allDone} />
       <div className="w-full max-w-md space-y-7">
-        <div className="flex items-center justify-between">
-          <Brand />
-          <form action={logout}>
+        <div className="relative">
+          <form action={logout} className="absolute right-0 top-0 z-10">
             <button
               type="submit"
               className="text-xs text-zinc-500 underline-offset-4 transition-colors hover:text-zinc-900 hover:underline dark:hover:text-zinc-100"
@@ -100,6 +99,7 @@ export default async function Home() {
               Cerrar sesión
             </button>
           </form>
+          <Hero />
         </div>
 
         {/* Tarjeta de saludo + progreso */}
@@ -110,13 +110,13 @@ export default async function Home() {
                 {greeting}
                 {morning && <Sun className="h-4 w-4 text-amber-400" />}
               </p>
-              <h1 className="mt-1 text-xl font-semibold tracking-tight">
+              <h2 className="mt-1 font-serif text-2xl font-semibold tracking-tight">
                 {total === 0
                   ? "Empecemos tu primer hábito"
                   : allDone
                     ? "¡Todo hecho por hoy! 🎉"
                     : `Hoy llevás ${done} de ${total}`}
-              </h1>
+              </h2>
             </div>
             {allDone && (
               <Sparkles className="float h-10 w-10 shrink-0 text-amber-400" />
