@@ -128,19 +128,19 @@ export default async function Home() {
   return (
     <main className="flex flex-1 flex-col items-center px-4 py-10 sm:py-12">
       <Celebration active={allDone} />
-      <div className="w-full max-w-md space-y-7">
-        <div className="flex justify-end">
-          <form action={logout}>
-            <button
-              type="submit"
-              className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-900 dark:hover:text-zinc-200"
-            >
-              <LogOut className="h-3.5 w-3.5" />
-              Cerrar sesión
-            </button>
-          </form>
-        </div>
 
+      {/* Cerrar sesión: fijo en la esquina superior derecha, lejos del logo. */}
+      <form action={logout} className="fixed right-3 top-3 z-20 sm:right-5 sm:top-5">
+        <button
+          type="submit"
+          className="inline-flex items-center gap-1 rounded-full border border-zinc-200/70 bg-white/70 px-2.5 py-1 text-xs text-zinc-500 shadow-sm backdrop-blur-sm transition-colors hover:bg-white hover:text-zinc-800 dark:border-zinc-800/70 dark:bg-zinc-950/70 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
+        >
+          <LogOut className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">Cerrar sesión</span>
+        </button>
+      </form>
+
+      <div className="w-full max-w-md space-y-7">
         <Hero />
 
         {/* Tarjeta de saludo + progreso */}
