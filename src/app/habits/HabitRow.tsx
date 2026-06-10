@@ -7,8 +7,8 @@
  */
 
 import { createElement, useOptimistic, useState, type CSSProperties } from "react"
-import { Flame } from "lucide-react"
-import { deleteHabit, toggleCheckInToday } from "./actions"
+import { Flame, Pencil, Check, X } from "lucide-react"
+import { deleteHabit, toggleCheckInToday, updateHabit } from "./actions"
 import { getHabitIcon, HABIT_AVATAR } from "./decor"
 
 type Props = {
@@ -41,6 +41,7 @@ export function HabitRow({
   // falla, React vuelve solo al estado real.
   const [optimisticDone, setOptimisticDone] = useOptimistic(doneToday)
   const [celebrate, setCelebrate] = useState(false)
+  const [editing, setEditing] = useState(false)
 
   const habitIcon = getHabitIcon(name)
 
@@ -118,56 +119,102 @@ export function HabitRow({
         })}
       </span>
 
-      <div className="min-w-0 flex-1">
-        <span
-          className={`block truncate text-sm transition-colors ${
-            optimisticDone
-              ? "text-zinc-400 line-through dark:text-zinc-500"
-              : "text-zinc-900 dark:text-zinc-50"
-          }`}
+      {editing ? (
+        <form
+          action={async (formData) => {
+            const newName = (formData.get("rename") as string)?.trim()
+            setEditing(false)
+            if (newName && newName !== name) await updateHabit(id, newName)
+          }}
+          className="flex flex-1 items-center gap-1.5"
         >
-          {name}
-        </span>
+          <input
+            name="rename"
+            defaultValue={name}
+            autoFocus
+            maxLength={100}
+            aria-label="Nuevo nombre del hábito"
+            className="min-w-0 flex-1 rounded-md border border-violet-300 bg-white px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-violet-600/20 dark:border-violet-700 dark:bg-zinc-900"
+          />
+          <button
+            type="submit"
+            aria-label="Guardar nombre"
+            className="flex h-7 w-7 items-center justify-center rounded-md text-violet-600 transition-colors hover:bg-violet-50 dark:hover:bg-violet-950/40"
+          >
+            <Check className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => setEditing(false)}
+            aria-label="Cancelar"
+            className="flex h-7 w-7 items-center justify-center rounded-md text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </form>
+      ) : (
+        <>
+          <div className="min-w-0 flex-1">
+            <span
+              className={`block truncate text-sm transition-colors ${
+                optimisticDone
+                  ? "text-zinc-400 line-through dark:text-zinc-500"
+                  : "text-zinc-900 dark:text-zinc-50"
+              }`}
+            >
+              {name}
+            </span>
 
-        {history.length === 7 && (
-          <div className="mt-1.5 flex items-center gap-1" aria-hidden>
-            {history.map((did, i) => (
-              <span
-                key={i}
-                className={`h-1.5 w-1.5 rounded-full transition-colors ${
-                  did
-                    ? "bg-violet-500"
-                    : "bg-zinc-200 dark:bg-zinc-700"
-                } ${i === 6 ? "ring-2 ring-violet-300 ring-offset-1 ring-offset-white dark:ring-offset-zinc-950" : ""}`}
-              />
-            ))}
+            {history.length === 7 && (
+              <div className="mt-1.5 flex items-center gap-1" aria-hidden>
+                {history.map((did, i) => (
+                  <span
+                    key={i}
+                    className={`h-1.5 w-1.5 rounded-full transition-colors ${
+                      did
+                        ? "bg-violet-500"
+                        : "bg-zinc-200 dark:bg-zinc-700"
+                    } ${i === 6 ? "ring-2 ring-violet-300 ring-offset-1 ring-offset-white dark:ring-offset-zinc-950" : ""}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        )}
-      </div>
 
-      {streak > 0 && (
-        <span
-          title={`${streak} día${streak === 1 ? "" : "s"} seguidos`}
-          className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold tabular-nums text-amber-700 dark:bg-amber-950/60 dark:text-amber-400"
-        >
-          <Flame className="h-3 w-3" strokeWidth={2.5} />
-          {streak}
-        </span>
+          {streak > 0 && (
+            <span
+              title={`${streak} día${streak === 1 ? "" : "s"} seguidos`}
+              className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold tabular-nums text-amber-700 dark:bg-amber-950/60 dark:text-amber-400"
+            >
+              <Flame className="h-3 w-3" strokeWidth={2.5} />
+              {streak}
+            </span>
+          )}
+
+          <button
+            type="button"
+            onClick={() => setEditing(true)}
+            aria-label="Editar hábito"
+            className="flex h-7 w-7 items-center justify-center rounded-md text-zinc-300 transition-all hover:bg-violet-50 hover:text-violet-600 focus:opacity-100 group-hover:opacity-100 sm:opacity-0 dark:text-zinc-600 dark:hover:bg-violet-950/40"
+          >
+            <Pencil className="h-3.5 w-3.5" />
+          </button>
+
+          <form
+            action={async () => {
+              await deleteHabit(id)
+            }}
+          >
+            <button
+              type="submit"
+              aria-label="Borrar hábito"
+              className="flex h-7 w-7 items-center justify-center rounded-md text-sm text-zinc-300 transition-all hover:bg-red-50 hover:text-red-600 focus:opacity-100 group-hover:opacity-100 sm:opacity-0 dark:text-zinc-600 dark:hover:bg-red-950/50"
+            >
+              ✕
+            </button>
+          </form>
+        </>
       )}
-
-      <form
-        action={async () => {
-          await deleteHabit(id)
-        }}
-      >
-        <button
-          type="submit"
-          aria-label="Borrar hábito"
-          className="flex h-7 w-7 items-center justify-center rounded-md text-sm text-zinc-300 transition-all hover:bg-red-50 hover:text-red-600 focus:opacity-100 group-hover:opacity-100 sm:opacity-0 dark:text-zinc-600 dark:hover:bg-red-950/50"
-        >
-          ✕
-        </button>
-      </form>
     </li>
   )
 }

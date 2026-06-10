@@ -16,6 +16,7 @@ import { Sprout, Sun } from "@/app/_components/Doodles"
 import { Celebration } from "@/app/_components/Celebration"
 import { Achievements } from "@/app/_components/Achievements"
 import { ProgressRing } from "@/app/_components/ProgressRing"
+import { Heatmap } from "@/app/_components/Heatmap"
 import { getHabitIcon } from "@/app/habits/decor"
 
 // Tarjetita de estadística (ícono + número + etiqueta).
@@ -123,6 +124,14 @@ export default async function Home() {
   const sortedHabits = [...habitsWithStatus].sort(
     (a, b) => Number(a.doneToday) - Number(b.doneToday),
   )
+
+  // Conteo de check-ins por día (para el mapa de actividad).
+  const dayCounts: Record<string, number> = {}
+  for (const h of habits ?? []) {
+    for (const c of (h.check_ins ?? []) as { day: string }[]) {
+      dayCounts[c.day] = (dayCounts[c.day] ?? 0) + 1
+    }
+  }
 
   const hour = new Date().getHours()
   const morning = hour >= 6 && hour < 13
@@ -254,6 +263,9 @@ export default async function Home() {
             />
           ))}
         </ul>
+
+        {/* Mapa de actividad (sólo si hay historial) */}
+        {totalDone > 0 && <Heatmap counts={dayCounts} today={today} />}
       </div>
     </main>
   )

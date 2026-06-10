@@ -19,6 +19,22 @@ export async function createHabit(formData: FormData) {
   revalidatePath("/")
 }
 
+export async function updateHabit(habitId: string, name: string) {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) redirect("/login")
+
+  const clean = name.trim()
+  if (!clean) return
+
+  // RLS asegura que sólo se puede editar un hábito propio.
+  await supabase.from("habits").update({ name: clean }).eq("id", habitId)
+
+  revalidatePath("/")
+}
+
 export async function deleteHabit(habitId: string) {
   const supabase = await createClient()
   const {
