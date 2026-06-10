@@ -141,7 +141,7 @@ export default async function Home() {
         </button>
       </form>
 
-      <div className="w-full max-w-md space-y-7">
+      <div className="reveal-stagger w-full max-w-md space-y-7">
         <Hero />
 
         {/* Tarjeta de saludo + progreso */}
