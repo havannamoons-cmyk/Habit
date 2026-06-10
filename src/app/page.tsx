@@ -12,9 +12,10 @@ import { logout } from "@/app/auth/actions"
 import { createHabit } from "@/app/habits/actions"
 import { HabitRow } from "@/app/habits/HabitRow"
 import { Hero } from "@/app/_components/Hero"
-import { Sprout, Sparkles, Sun } from "@/app/_components/Doodles"
+import { Sprout, Sun } from "@/app/_components/Doodles"
 import { Celebration } from "@/app/_components/Celebration"
 import { Achievements } from "@/app/_components/Achievements"
+import { ProgressRing } from "@/app/_components/ProgressRing"
 import { getHabitIcon } from "@/app/habits/decor"
 
 // Tarjetita de estadística (ícono + número + etiqueta).
@@ -145,8 +146,8 @@ export default async function Home() {
 
         {/* Tarjeta de saludo + progreso */}
         <section className="relative overflow-hidden rounded-2xl border border-violet-100 bg-gradient-to-br from-amber-50 via-white to-violet-50/70 p-5 shadow-sm dark:border-zinc-800 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900">
-          <div className="flex items-start justify-between gap-3">
-            <div>
+          <div className="flex items-center justify-between gap-4">
+            <div className="min-w-0">
               <p className="flex items-center gap-1.5 text-xs text-zinc-500">
                 {greeting}
                 {morning && <Sun className="h-4 w-4 text-amber-400" />}
@@ -159,24 +160,10 @@ export default async function Home() {
                     : `Hoy llevás ${done} de ${total}`}
               </h2>
             </div>
-            {allDone && (
-              <Sparkles className="float h-10 w-10 shrink-0 text-amber-400" />
+            {total > 0 && (
+              <ProgressRing value={pct} done={done} total={total} />
             )}
           </div>
-
-          {total > 0 && (
-            <div className="mt-4 space-y-1.5">
-              <div className="h-2.5 w-full overflow-hidden rounded-full bg-violet-100/80 dark:bg-zinc-800">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-violet-400 to-fuchsia-500 transition-all duration-700"
-                  style={{ width: `${pct}%` }}
-                />
-              </div>
-              <p className="text-right text-xs font-medium tabular-nums text-zinc-500">
-                {pct}%
-              </p>
-            </div>
-          )}
         </section>
 
         {/* Estadísticas */}
