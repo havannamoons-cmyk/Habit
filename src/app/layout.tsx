@@ -2,6 +2,18 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import { Backdrop } from "@/app/_components/Backdrop";
+import { ThemeToggle } from "@/app/_components/ThemeToggle";
+
+// Se ejecuta antes de pintar para aplicar el tema guardado (o el del sistema)
+// y evitar el parpadeo claro→oscuro al cargar.
+const themeScript = `
+  try {
+    var t = localStorage.getItem('theme');
+    if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  } catch (e) {}
+`;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,8 +48,12 @@ export default function RootLayout({
       lang="es"
       className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="min-h-full flex flex-col">
         <Backdrop />
+        <ThemeToggle />
         {children}
       </body>
     </html>
