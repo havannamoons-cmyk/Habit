@@ -45,7 +45,13 @@ export function HabitRow({
   const habitIcon = getHabitIcon(name)
 
   return (
-    <li className="group flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-3 py-3 shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-emerald-900">
+    <li
+      className={`group flex items-center gap-3 rounded-xl border px-3 py-3 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md ${
+        optimisticDone
+          ? "border-violet-200 bg-violet-50/60 dark:border-violet-900/50 dark:bg-violet-950/20"
+          : "border-zinc-200 bg-white hover:border-violet-200 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-violet-900"
+      }`}
+    >
       <form
         action={async () => {
           const next = !optimisticDone
@@ -103,7 +109,7 @@ export function HabitRow({
       </form>
 
       <span
-        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${HABIT_AVATAR}`}
+        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ring-1 ring-inset ring-violet-100 dark:ring-violet-900/40 ${HABIT_AVATAR}`}
         aria-hidden
       >
         {createElement(habitIcon, {

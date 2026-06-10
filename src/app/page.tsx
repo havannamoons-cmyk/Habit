@@ -118,6 +118,12 @@ export default async function Home() {
     0,
   )
 
+  // Pendientes arriba, completados abajo (sort estable: mantiene el orden
+  // de creación dentro de cada grupo).
+  const sortedHabits = [...habitsWithStatus].sort(
+    (a, b) => Number(a.doneToday) - Number(b.doneToday),
+  )
+
   const hour = new Date().getHours()
   const morning = hour >= 6 && hour < 13
   const greeting = morning
@@ -237,7 +243,7 @@ export default async function Home() {
             </li>
           )}
 
-          {habitsWithStatus.map((habit) => (
+          {sortedHabits.map((habit) => (
             <HabitRow
               key={habit.id}
               id={habit.id}
