@@ -7,6 +7,7 @@
  */
 
 import { createElement, useOptimistic, useState, type CSSProperties } from "react"
+import Link from "next/link"
 import { Flame, Pencil, Check, X } from "lucide-react"
 import { deleteHabit, toggleCheckInToday, updateHabit } from "./actions"
 import { getHabitIcon, HABIT_AVATAR } from "./decor"
@@ -155,15 +156,16 @@ export function HabitRow({
       ) : (
         <>
           <div className="min-w-0 flex-1">
-            <span
-              className={`block truncate text-sm transition-colors ${
+            <Link
+              href={`/habits/${id}`}
+              className={`block truncate text-sm underline-offset-2 transition-colors hover:underline ${
                 optimisticDone
                   ? "text-zinc-400 line-through dark:text-zinc-500"
                   : "text-zinc-900 dark:text-zinc-50"
               }`}
             >
               {name}
-            </span>
+            </Link>
 
             {history.length === 7 && (
               <div className="mt-1.5 flex items-center gap-1" aria-hidden>
